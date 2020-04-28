@@ -13,8 +13,12 @@ class AddTodo extends Component {
 	};
 
 	handleAddTodo = () => {
+		const { input } = this.state;
+
+		if(input.trim() === "")
+			return;
 		// dispatches actions to add todo
-		this.props.addTodo(this.state.input);
+		this.props.addTodo(input.trim());
 
 		// sets state back to empty string
 		this.setState({ input: '' });

@@ -1,11 +1,9 @@
 import React from "react";
 import Todo from "./Todo";
 import { connect } from "react-redux";
-import { getTodosByVisibilityFilter } from "../helpers/selector";
+import { getVisibleTodos } from "../helpers/selector";
 
 const TodoList = ({ todos }) => {
-	console.log('todo list render');
-	
 	return (
 		<div>
 			<ul className="todo-list">
@@ -21,10 +19,8 @@ const TodoList = ({ todos }) => {
 };
 
 const mapStateToProps = (state) => {
-	const { visibilityFilter } = state;
-	const todos = getTodosByVisibilityFilter(state, visibilityFilter);
 	return {
-		todos,
+		todos: getVisibleTodos(state),
 	};
 };
 

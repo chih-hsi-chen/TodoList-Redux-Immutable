@@ -1,25 +1,31 @@
 import { VISIBILITY_FILTERS } from "../constants/filterType";
+import { createSelector } from "reselect";
 
-export const getTodosState = store => store.todos;
+// selectors
+const getVisibilityFilter = (store) => store.visibilityFilter.type;
+const getTodos = store =>
+	getTodoIDList(store).map(id => getTodoById(store, id));
 
-export const getTodoList = store =>
+
+const getTodosState = (store) => store.todos;
+
+const getTodoIDList = store =>
 	getTodosState(store) ? getTodosState(store).allIds : [];
 
-export const getTodoById = (store, id) =>
+const getTodoById = (store, id) =>
 	getTodosState(store) ? { ...getTodosState(store).byIds[id], id } : {};
 
-export const getTodos = store =>
-	getTodoList(store).map(id => getTodoById(store, id));
-
-export const getTodosByVisibilityFilter = (store, visibilityFilter) => {
-	const allTodos = getTodos(store);
-	switch (visibilityFilter) {
-		case VISIBILITY_FILTERS.COMPLETED:
-			return allTodos.filter(todo => todo.completed);
-		case VISIBILITY_FILTERS.INCOMPLETE:
-			return allTodos.filter(todo => !todo.completed);
-		case VISIBILITY_FILTERS.ALL:
-		default:
-			return allTodos;
+export const getVisibleTodos = createSelector(
+	[ getVisibilityFilter, getTodos ],
+	( visibilityFilter, todos ) => {
+		switch (visibilityFilter) {
+			case VISIBILITY_FILTERS.COMPLETED:
+				return todos.filter(todo => todo.completed);
+			case VISIBILITY_FILTERS.INCOMPLETE:
+				return todos.filter(todo => !todo.completed);
+			case VISIBILITY_FILTERS.ALL:
+			default:
+				return todos;
+		}
 	}
-};
+);

@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { toggleTodo } from "../actions/actions";
+import { toggleTodo, deleteTodo } from "../actions/actions";
 
-const Todo = ({ todo, toggleTodo }) => (
+const Todo = ({ todo, toggleTodo, deleteTodo }) => (
 	<li
 		className="todo-item"
 		onClick={() => toggleTodo(todo.id) /** dispatches action to toggle todo */}
@@ -13,10 +13,19 @@ const Todo = ({ todo, toggleTodo }) => (
 		>
 			{todo.content}
 		</span>
+		<button
+			onClick = {(e) => {
+				e.stopPropagation();
+				deleteTodo(todo.id);
+			}}
+		>delete</button>
 	</li>
 );
 
 export default connect(
 	null,
-	{ toggleTodo }
+	{
+		toggleTodo,
+		deleteTodo
+	}
 )(Todo);

@@ -1,4 +1,8 @@
-import { ADD_TODO, TOGGLE_TODO } from "../constants/actionType";
+import {
+	ADD_TODO,
+	TOGGLE_TODO,
+	DELETE_TODO
+} from "../constants/actionType";
 
 const initialState = {
 	allIds: [],
@@ -32,6 +36,16 @@ export default function (state = initialState, action) {
 						completed: !state.byIds[id].completed
 					}
 				}
+			};
+		}
+		case DELETE_TODO: {
+			const {id: deletedID} = action.payload;
+			const { [deletedID]: test, ...rest } = state.byIds;
+			
+			return {
+				...state,
+				allIds: state.allIds.filter(id => id !== deletedID),
+				byIds: { ...rest }
 			};
 		}
 		default:
