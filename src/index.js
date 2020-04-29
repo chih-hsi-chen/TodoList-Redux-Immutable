@@ -6,6 +6,28 @@ import App from './App';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
+// import Immutable from 'immutable';
+
+// function test() {
+// 	const state = Immutable.fromJS({
+// 		allIds: [],
+// 		byIds: {}
+// 	});
+// 	const id = '1';
+// 	const content = 'ys';
+
+// 	const newState = state.updateIn(['byIds'], byIds => byIds.merge(
+// 		{
+// 			[id]: {
+// 				content,
+// 				completed: false
+// 			}
+// 		}
+// 	));
+// 	console.log(newState.toJS());
+// }
+// test();
+
 ReactDOM.render(
 	<Provider store={store}>
 		<React.StrictMode>

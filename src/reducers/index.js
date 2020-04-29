@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+import { combineReducers } from "redux-immutable";
 import visibilityFilter from "./visibilityFilter";
 import todos from "./todos";
 

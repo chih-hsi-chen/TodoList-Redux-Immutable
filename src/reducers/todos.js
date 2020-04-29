@@ -3,50 +3,44 @@ import {
 	TOGGLE_TODO,
 	DELETE_TODO
 } from "../constants/actionType";
+import { fromJS, Record } from "immutable";
 
-const initialState = {
-	allIds: [],
-	byIds: {},
-};
+const initialState = fromJS([]);
 
+const TodoItem = Record({
+	content: '',
+	completed: false,
+	id: ''
+});
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case ADD_TODO: {
 			const { id, content } = action.payload;
-			return {
-				...state,
-				allIds: [...state.allIds, id],
-				byIds: {
-					...state.byIds,
-					[id]: {
+
+			return state
+				.push(
+					TodoItem({
 						content,
-						completed: false
-					}
-				}
-			};
+						completed: false,
+						id
+					})
+				);
 		}
 		case TOGGLE_TODO: {
 			const { id } = action.payload;
-			return {
-				...state,
-				byIds: {
-					...state.byIds,
-					[id]: {
-						...state.byIds[id],
-						completed: !state.byIds[id].completed
-					}
-				}
-			};
+
+			return state
+				.map(todo => {
+					let completed = todo.get('completed');
+					
+					return todo.get('id') === id ? todo.set('completed', !completed) : todo;
+				});
 		}
 		case DELETE_TODO: {
-			const {id: deletedID} = action.payload;
-			const { [deletedID]: test, ...rest } = state.byIds;
+			const { id } = action.payload;
 			
-			return {
-				...state,
-				allIds: state.allIds.filter(id => id !== deletedID),
-				byIds: { ...rest }
-			};
+			return state
+				.filter(todo => todo.get('id') !== id);
 		}
 		default:
 			return state;
